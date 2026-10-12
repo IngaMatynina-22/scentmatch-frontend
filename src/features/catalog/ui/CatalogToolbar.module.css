@@ -1,0 +1,26 @@
+.root {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.total {
+  margin: 0;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.controls {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(3, minmax(8rem, 11rem));
+}
+
+@media (max-width: 720px) {
+  .controls {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
+}
