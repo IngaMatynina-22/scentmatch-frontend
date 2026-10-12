@@ -1,4 +1,4 @@
-# ScentMatch Frontend
+﻿# ScentMatch Frontend
 
 Архітектурний каркас frontend-частини дипломного проєкту ScentMatch (React + TypeScript + Vite).
 
@@ -33,7 +33,7 @@ npm run dev
 
 ## Дизайн-система
 
-Візуальна мова зафіксована в `src/styles/tokens.css`, `typography.css`.
+Візуальна мова зафіксована в `src/styles/tokens.css` та `typography.css`.
 
 - світла тема за замовчуванням, повноцінна темна (`data-theme`)
 - вибір теми в `localStorage` (`scentmatch.theme`)
