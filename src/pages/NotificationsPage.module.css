@@ -1,0 +1,27 @@
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.confirm {
+  margin-bottom: var(--space-5);
+}
+
+.meta {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.list {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.actionError {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--color-danger);
+}
