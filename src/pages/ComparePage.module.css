@@ -1,0 +1,10 @@
+.stack {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}

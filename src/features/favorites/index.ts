@@ -1,0 +1,5 @@
+export { favoritesApi } from '@/features/favorites/api/favoritesApi'
+export type { FavoritesQuery } from '@/features/favorites/api/favoritesApi'
+export { FavoritesProvider } from '@/features/favorites/model/FavoritesProvider'
+export { useFavorites } from '@/features/favorites/model/useFavorites'
+export { FavoriteToggleButton } from '@/features/favorites/ui/FavoriteToggleButton'

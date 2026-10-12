@@ -1,0 +1,90 @@
+.scroll {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.table {
+  width: 100%;
+  min-width: 40rem;
+  border-collapse: collapse;
+}
+
+.caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.table th,
+.table td {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+  font-size: var(--text-sm);
+}
+
+.table thead th {
+  background: var(--color-surface-muted);
+  position: sticky;
+  top: 0;
+}
+
+.rowLabel,
+.table tbody th {
+  width: 9rem;
+  min-width: 8rem;
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+.perfumeHead {
+  min-width: 11rem;
+}
+
+.headContent {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+}
+
+.brand {
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+  text-decoration: none;
+  line-height: var(--leading-snug);
+}
+
+.name:hover {
+  color: var(--color-accent-hover);
+}
+
+.common {
+  color: var(--color-text);
+}
+
+.diff {
+  color: var(--color-text);
+  box-shadow: inset 3px 0 0 var(--color-accent);
+}

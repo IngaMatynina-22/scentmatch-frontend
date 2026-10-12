@@ -1,0 +1,130 @@
+.root {
+  position: relative;
+  display: inline-grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.panel {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  right: 0;
+  min-width: 12rem;
+  max-height: min(40vh, 16rem);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-1);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-elevated);
+  box-shadow: var(--shadow-md);
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.15rem;
+}
+
+.option {
+  width: 100%;
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.55rem 0.75rem;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.option:hover:not(:disabled),
+.option:focus-visible {
+  background: var(--color-interactive-muted);
+  outline: none;
+}
+
+.option:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.optionName {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.optionMeta {
+  font-size: var(--text-xs);
+  color: var(--color-text-subtle);
+}
+
+.status {
+  margin: 0;
+  padding: 0.55rem 0.75rem;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.empty {
+  display: grid;
+  gap: var(--space-2);
+  padding: 0.55rem 0.75rem;
+}
+
+.link {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-accent-hover);
+}
+
+.errorBlock {
+  display: grid;
+  gap: var(--space-2);
+  padding: 0.55rem 0.75rem;
+}
+
+.error {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-danger);
+}
+
+.feedback {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: var(--leading-snug);
+}
+
+.feedbackSuccess {
+  color: var(--color-accent-hover);
+}
+
+.feedbackInfo {
+  color: var(--color-text-muted);
+}
+
+.feedbackError {
+  color: var(--color-danger);
+}
+
+.retry {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
