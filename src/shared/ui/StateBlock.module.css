@@ -1,0 +1,30 @@
+.root {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding: var(--space-7) var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-medium);
+  color: var(--color-text);
+}
+
+.message {
+  margin: 0;
+  max-width: 32rem;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+}
+
+.actionSlot {
+  margin-top: var(--space-2);
+}

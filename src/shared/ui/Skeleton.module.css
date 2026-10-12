@@ -1,0 +1,27 @@
+.root {
+  display: inline-block;
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-muted) 0%,
+    var(--color-surface-elevated) 45%,
+    var(--color-surface-muted) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.sm {
+  border-radius: var(--radius-sm);
+}
+
+.md {
+  border-radius: var(--radius-md);
+}
+
+.lg {
+  border-radius: var(--radius-lg);
+}
+
+.pill {
+  border-radius: var(--radius-pill);
+}
