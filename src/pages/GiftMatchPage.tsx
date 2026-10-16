@@ -2,8 +2,11 @@ import { useEffect, useRef, useState } from 'react'
 import type { FragranceType, Note, Season } from '@/entities/perfume'
 import { catalogApi } from '@/features/catalog/api/catalogApi'
 import {
+  GIFT_PREVIEW_COUNT,
+  clearGiftMatchSession,
   createEmptyGiftForm,
   matchingApi,
+  saveGiftMatchSession,
   validateGiftMatchingForm,
   type GiftMatchingFormState,
   type GiftMatchingRequest,
@@ -116,14 +119,23 @@ export function GiftMatchPage() {
     try {
       const response = await matchingApi.matchGift(payload, controller.signal)
       if (!controller.signal.aborted) {
-        setResults(response.items ?? [])
-        setOccasionLabel(response.occasion ?? payload.occasion ?? null)
+        const items = response.items ?? []
+        const occasion = response.occasion ?? payload.occasion ?? null
+        setResults(items)
+        setOccasionLabel(occasion)
         setSubmitted(true)
+        saveGiftMatchSession({
+          items,
+          occasion,
+          request: payload,
+          createdAt: Date.now(),
+        })
       }
     } catch (error) {
       if (controller.signal.aborted) return
       setSubmitted(true)
       setResults([])
+      clearGiftMatchSession()
       setApiError(getApiErrorMessage(error, 'Не вдалося підібрати подарунок.'))
       setFieldErrors(getFieldErrors(error))
     } finally {
@@ -329,6 +341,7 @@ export function GiftMatchPage() {
                   setSubmitted(false)
                   setOccasionLabel(null)
                   lastRequestRef.current = null
+                  clearGiftMatchSession()
                 }}
               >
                 Скинути
@@ -358,10 +371,18 @@ export function GiftMatchPage() {
               <MatchingResults
                 items={results}
                 submitted={submitted}
+                limit={GIFT_PREVIEW_COUNT}
                 idleTitle="Результати подарунка"
                 idleMessage="Заповніть критерії та натисніть «Підібрати подарунок»."
                 emptyTitle="Підходящих подарунків не знайдено"
                 emptyMessage="Змініть бюджет, ноти або сезон і спробуйте знову."
+                footer={
+                  submitted && results.length > GIFT_PREVIEW_COUNT ? (
+                    <ButtonLink to={ROUTES.matchGiftResults} variant="accent">
+                      Дивитись ще
+                    </ButtonLink>
+                  ) : null
+                }
               />
             ) : null}
           </div>

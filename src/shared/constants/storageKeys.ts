@@ -13,4 +13,5 @@ export const STORAGE_KEYS = {
   tokenExpiresAt: 'scentmatch.tokenExpiresAt',
   theme: 'scentmatch.theme',
   compareSelection: 'scentmatch.compareSelection',
+  giftMatchSession: 'scentmatch.giftMatchSession',
 } as const

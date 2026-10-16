@@ -133,6 +133,9 @@ export function TextMatchPage() {
         controller.signal,
       )
       if (!controller.signal.aborted) {
+        // #region agent log
+        fetch('http://127.0.0.1:7646/ingest/a93378d8-d876-4c8d-aacd-a4cfef8f0ff5',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'66d254'},body:JSON.stringify({sessionId:'66d254',runId:'post-fix',hypothesisId:'H',location:'TextMatchPage.tsx:matchText',message:'Text match API response',data:{textLen:validation.request.text.length,textPreview:validation.request.text.slice(0,80),itemCount:(response.items??[]).length,preferredNotes:(response.parsedCriteria?.preferredNotes??[]).map((n)=>n.name),excludedNotes:(response.parsedCriteria?.excludedNotes??[]).map((n)=>n.name),seasonName:response.parsedCriteria?.seasonName??null,fragranceTypeName:response.parsedCriteria?.fragranceTypeName??null,intensity:response.parsedCriteria?.intensity??null,ambiguous:response.ambiguousCriteria??[]},timestamp:Date.now()})}).catch(()=>{});
+        // #endregion
         setResults(response.items ?? [])
         setCriteria(response.parsedCriteria ?? null)
         setAmbiguous(response.ambiguousCriteria ?? [])
@@ -140,6 +143,9 @@ export function TextMatchPage() {
       }
     } catch (error) {
       if (controller.signal.aborted) return
+      // #region agent log
+      fetch('http://127.0.0.1:7646/ingest/a93378d8-d876-4c8d-aacd-a4cfef8f0ff5',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'66d254'},body:JSON.stringify({sessionId:'66d254',runId:'post-fix',hypothesisId:'H',location:'TextMatchPage.tsx:matchText-error',message:'Text match API error',data:{message:error instanceof Error?error.message:String(error)},timestamp:Date.now()})}).catch(()=>{});
+      // #endregion
       setSubmitted(true)
       setResults([])
       setCriteria(null)

@@ -32,16 +32,31 @@
   padding: 0;
   list-style: none;
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 .item {
   display: grid;
-  gap: var(--space-3);
-  padding: var(--space-4);
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   background: var(--color-surface);
+}
+
+.compactFooter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.summary {
+  margin: 0;
+  flex: 1 1 12rem;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
 }
 
 .row {

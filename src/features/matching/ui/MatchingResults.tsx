@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import type { MatchingResult } from '@/features/matching/model/types'
 import { ScoreBreakdownPanel } from '@/shared/scoring'
@@ -8,6 +9,10 @@ import styles from './MatchingResults.module.css'
 type MatchingResultsProps = {
   items: MatchingResult[]
   submitted: boolean
+  /** When set, only the first N items are rendered. */
+  limit?: number
+  /** Optional footer under the list (e.g. “Дивитись ще”). */
+  footer?: ReactNode
   emptyTitle?: string
   emptyMessage?: string
   idleTitle?: string
@@ -41,6 +46,8 @@ function normalizeBreakdown(item: MatchingResult) {
 export function MatchingResults({
   items,
   submitted,
+  limit,
+  footer,
   emptyTitle = 'Нічого не знайдено',
   emptyMessage = 'Спробуйте змінити критерії підбору та надіслати запит знову.',
   idleTitle = 'Результати з’являться тут',
@@ -54,14 +61,21 @@ export function MatchingResults({
     return <EmptyState title={emptyTitle} message={emptyMessage} />
   }
 
+  const visible =
+    typeof limit === 'number' && limit > 0 ? items.slice(0, limit) : items
+  const isPreview = visible.length < items.length
+  const titleCount = isPreview
+    ? `${visible.length} з ${items.length}`
+    : String(items.length)
+
   return (
     <section className={styles.root} aria-labelledby="matching-results-title">
       <h2 id="matching-results-title" className={styles.title}>
-        Результати · {items.length}
+        Результати · {titleCount}
       </h2>
 
       <ol className={styles.list}>
-        {items.map((item, index) => {
+        {visible.map((item, index) => {
           const priceLabel = formatPrice(item.price)
           return (
             <li key={item.perfumeId} className={styles.item}>
@@ -97,6 +111,8 @@ export function MatchingResults({
           )
         })}
       </ol>
+
+      {footer ? <div className={styles.footer}>{footer}</div> : null}
     </section>
   )
 }

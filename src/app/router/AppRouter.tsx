@@ -27,6 +27,7 @@ import { CollectionsPage } from '@/pages/CollectionsPage'
 import { ComparePage } from '@/pages/ComparePage'
 import { FavoritesPage } from '@/pages/FavoritesPage'
 import { GiftMatchPage } from '@/pages/GiftMatchPage'
+import { GiftMatchResultsPage } from '@/pages/GiftMatchResultsPage'
 import { HistoryPage } from '@/pages/HistoryPage'
 import { HomePage } from '@/pages/HomePage'
 import { JournalPage } from '@/pages/JournalPage'
@@ -55,6 +56,7 @@ export function AppRouter() {
         <Route path={ROUTES.perfumeDetails} element={<PerfumeDetailsPage />} />
         <Route path={ROUTES.compare} element={<ComparePage />} />
         <Route path={ROUTES.matchGift} element={<GiftMatchPage />} />
+        <Route path={ROUTES.matchGiftResults} element={<GiftMatchResultsPage />} />
         <Route path={ROUTES.barcode} element={<BarcodeSearchPage />} />
 
         <Route element={<ProtectedRoute />}>

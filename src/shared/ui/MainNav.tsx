@@ -49,6 +49,18 @@ export function MainNav() {
   }
 
   useEffect(() => {
+    const desktopNav = document.querySelector(
+      'nav[aria-label="Основна навігація"]',
+    ) as HTMLElement | null
+    const pinned = document.querySelector(
+      '[data-nav-pinned="true"]',
+    ) as HTMLElement | null
+    // #region agent log
+    fetch('http://127.0.0.1:7646/ingest/a93378d8-d876-4c8d-aacd-a4cfef8f0ff5',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'66d254'},body:JSON.stringify({sessionId:'66d254',runId:'post-fix',hypothesisId:'G',location:'MainNav.tsx:pinned-outside-scroll',message:'Pinned admin/logout outside scroll',data:{isAuthenticated,isAdmin,path:location.pathname,pageOverflows:document.documentElement.scrollWidth>document.documentElement.clientWidth+1,navScrollWidth:desktopNav?.scrollWidth??null,navClientWidth:desktopNav?.clientWidth??null,navOverflows:desktopNav?desktopNav.scrollWidth>desktopNav.clientWidth:null,pinnedExists:Boolean(pinned),pinnedText:pinned?.textContent?.replace(/\s+/g,' ').trim().slice(0,80)??null,adminInsideScroll:Boolean(desktopNav?.textContent?.includes('Адмін')),logoutInsideScroll:Boolean(desktopNav?.textContent?.includes('Вийти'))},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
+  }, [isAuthenticated, isAdmin, isLoading, open, location.pathname])
+
+  useEffect(() => {
     if (!open) return
 
     function onKeyDown(event: KeyboardEvent) {
@@ -71,7 +83,7 @@ export function MainNav() {
     }
   }
 
-  const links = (
+  const scrollLinks = (
     <>
       {publicLinks.map((link) => (
         <li key={link.to}>
@@ -127,42 +139,55 @@ export function MainNav() {
           </li>
         </>
       ) : null}
-
-      {!isLoading && isAdmin ? (
-        <li>
-          <NavLink
-            to={ROUTES.admin.perfumes}
-            className={({ isActive }) =>
-              isActive ? `${styles.link} ${styles.active}` : styles.link
-            }
-          >
-            Адмін
-          </NavLink>
-        </li>
-      ) : null}
-
-      {!isLoading && isAuthenticated ? (
-        <li className={styles.loginItem}>
-          <Button
-            type="button"
-            size="sm"
-            variant="ghost"
-            loading={loggingOut}
-            onClick={() => void handleLogout()}
-            aria-label={user ? `Вийти (${user.username})` : 'Вийти'}
-          >
-            Вийти
-          </Button>
-        </li>
-      ) : null}
     </>
   )
 
+  const adminItem =
+    !isLoading && isAdmin ? (
+      <li>
+        <NavLink
+          to={ROUTES.admin.perfumes}
+          className={({ isActive }) =>
+            isActive ? `${styles.link} ${styles.active}` : styles.link
+          }
+        >
+          Адмін
+        </NavLink>
+      </li>
+    ) : null
+
+  const logoutItem =
+    !isLoading && isAuthenticated ? (
+      <li className={styles.loginItem}>
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          loading={loggingOut}
+          onClick={() => void handleLogout()}
+          aria-label={user ? `Вийти (${user.username})` : 'Вийти'}
+        >
+          Вийти
+        </Button>
+      </li>
+    ) : null
+
+  const showPinned = Boolean(adminItem || logoutItem)
+
   return (
     <div className={styles.root}>
-      <nav className={styles.desktop} aria-label="Основна навігація">
-        <ul className={styles.list}>{links}</ul>
-      </nav>
+      <div className={styles.desktopRow}>
+        <nav className={styles.desktop} aria-label="Основна навігація">
+          <ul className={styles.list}>{scrollLinks}</ul>
+        </nav>
+
+        {showPinned ? (
+          <ul className={styles.pinned} data-nav-pinned="true">
+            {adminItem}
+            {logoutItem}
+          </ul>
+        ) : null}
+      </div>
 
       <div className={styles.mobile}>
         <IconButton
@@ -184,7 +209,11 @@ export function MainNav() {
 
         {open ? (
           <nav id={menuId} className={styles.drawer} aria-label="Мобільна навігація">
-            <ul className={styles.drawerList}>{links}</ul>
+            <ul className={styles.drawerList}>
+              {scrollLinks}
+              {adminItem}
+              {logoutItem}
+            </ul>
           </nav>
         ) : null}
       </div>

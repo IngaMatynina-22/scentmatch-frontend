@@ -8,13 +8,16 @@
 }
 
 .inner {
+  box-sizing: border-box;
   width: min(100% - 2rem, var(--container-max));
+  max-width: calc(100vw - 2rem);
   min-height: var(--header-height);
   margin-inline: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
+  min-width: 0;
 }
 
 .brand {
@@ -36,6 +39,8 @@
 .actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: var(--space-3);
   min-width: 0;
+  flex: 1 1 auto;
 }

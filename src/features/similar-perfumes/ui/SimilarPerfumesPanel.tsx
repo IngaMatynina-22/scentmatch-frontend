@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { similarPerfumesApi } from '@/features/similar-perfumes/api/similarPerfumesApi'
-import type { SimilarPerfumesPage } from '@/features/similar-perfumes/model/types'
+import type { SimilarPerfume, SimilarPerfumesPage } from '@/features/similar-perfumes/model/types'
 import { ScoreBreakdownPanel } from '@/shared/scoring'
 import { getApiErrorMessage } from '@/shared/api/errorMessage'
 import { perfumeDetailsPath } from '@/shared/constants/routes'
@@ -33,12 +33,50 @@ function formatPrice(
   }).format(price)
 }
 
+function pluralUk(count: number, one: string, few: string, many: string): string {
+  const mod10 = count % 10
+  const mod100 = count % 100
+  if (mod10 === 1 && mod100 !== 11) return one
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return few
+  return many
+}
+
+function summarizeBreakdown(item: SimilarPerfume): string {
+  const positives = (item.positiveReasons ?? []).length
+  const mismatches = (item.mismatchReasons ?? []).length
+  const gaps = (item.dataGaps ?? []).length
+  const parts: string[] = []
+
+  if (positives > 0) {
+    parts.push(
+      `${positives} ${pluralUk(positives, 'причина', 'причини', 'причин')}`,
+    )
+  }
+  if (mismatches > 0) {
+    parts.push(
+      `${mismatches} ${pluralUk(mismatches, 'невідповідність', 'невідповідності', 'невідповідностей')}`,
+    )
+  }
+  if (gaps > 0) {
+    parts.push(
+      `${gaps} ${pluralUk(gaps, 'прогалина', 'прогалини', 'прогалин')} у даних`,
+    )
+  }
+
+  return parts.length > 0 ? parts.join(' · ') : 'Без детальних причин'
+}
+
 export function SimilarPerfumesPanel({ perfumeId }: SimilarPerfumesPanelProps) {
   const [page, setPage] = useState(1)
   const [data, setData] = useState<SimilarPerfumesPage | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [reload, setReload] = useState(0)
+  const [expandedIds, setExpandedIds] = useState<Record<number, boolean>>({})
+
+  useEffect(() => {
+    setExpandedIds({})
+  }, [perfumeId, page])
 
   useEffect(() => {
     const controller = new AbortController()
@@ -70,6 +108,13 @@ export function SimilarPerfumesPanel({ perfumeId }: SimilarPerfumesPanelProps) {
     return () => controller.abort()
   }, [perfumeId, page, reload])
 
+  function toggleExpanded(id: number) {
+    setExpandedIds((current) => ({
+      ...current,
+      [id]: !current[id],
+    }))
+  }
+
   return (
     <section className={styles.root} aria-labelledby="similar-perfumes-title">
       <div className={styles.header}>
@@ -77,9 +122,7 @@ export function SimilarPerfumesPanel({ perfumeId }: SimilarPerfumesPanelProps) {
           Схожі аромати
         </h2>
         {data && data.totalItems > 0 ? (
-          <p className={styles.count}>
-            Знайдено {data.totalItems}
-          </p>
+          <p className={styles.count}>Знайдено {data.totalItems}</p>
         ) : null}
       </div>
 
@@ -108,6 +151,9 @@ export function SimilarPerfumesPanel({ perfumeId }: SimilarPerfumesPanelProps) {
                 item.perfume.price,
                 item.perfume.currency,
               )
+              const expanded = Boolean(expandedIds[item.perfume.id])
+              const summary = summarizeBreakdown(item)
+
               return (
                 <li key={item.perfume.id} className={styles.item}>
                   <div className={styles.row}>
@@ -135,14 +181,32 @@ export function SimilarPerfumesPanel({ perfumeId }: SimilarPerfumesPanelProps) {
                       ) : null}
                     </div>
                   </div>
-                  <ScoreBreakdownPanel
-                    breakdown={{
-                      components: item.components ?? [],
-                      positiveReasons: item.positiveReasons ?? [],
-                      mismatchReasons: item.mismatchReasons ?? [],
-                      dataGaps: item.dataGaps ?? [],
-                    }}
-                  />
+
+                  <div className={styles.compactFooter}>
+                    {!expanded ? (
+                      <p className={styles.summary}>{summary}</p>
+                    ) : null}
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      aria-expanded={expanded}
+                      onClick={() => toggleExpanded(item.perfume.id)}
+                    >
+                      {expanded ? 'Згорнути' : 'Деталі'}
+                    </Button>
+                  </div>
+
+                  {expanded ? (
+                    <ScoreBreakdownPanel
+                      breakdown={{
+                        components: item.components ?? [],
+                        positiveReasons: item.positiveReasons ?? [],
+                        mismatchReasons: item.mismatchReasons ?? [],
+                        dataGaps: item.dataGaps ?? [],
+                      }}
+                    />
+                  ) : null}
                 </li>
               )
             })}

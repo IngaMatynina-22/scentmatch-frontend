@@ -36,7 +36,11 @@ export function PerfumeReviewsList({
   onRetry,
 }: PerfumeReviewsListProps) {
   return (
-    <section className={styles.root} aria-labelledby="reviews-title">
+    <section
+      id="perfume-reviews"
+      className={styles.root}
+      aria-labelledby="reviews-title"
+    >
       <div className={styles.header}>
         <h2 id="reviews-title" className={styles.title}>
           Відгуки

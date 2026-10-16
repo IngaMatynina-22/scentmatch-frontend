@@ -52,9 +52,22 @@ export function PerfumeCard({ perfume }: PerfumeCardProps) {
           </p>
 
           <div className={styles.stats}>
-            <span className={styles.rating} aria-label={`Рейтинг ${perfume.rating.toFixed(1)}`}>
-              ★ {perfume.rating.toFixed(1)}
-              <span className={styles.reviews}>({perfume.reviewsCount})</span>
+            <span
+              className={styles.rating}
+              aria-label={
+                perfume.reviewsCount > 0
+                  ? `Рейтинг ${perfume.rating.toFixed(1)}`
+                  : 'Немає відгуків'
+              }
+            >
+              {perfume.reviewsCount > 0 ? (
+                <>
+                  ★ {perfume.rating.toFixed(1)}
+                  <span className={styles.reviews}>({perfume.reviewsCount})</span>
+                </>
+              ) : (
+                <span className={styles.reviews}>Немає відгуків</span>
+              )}
             </span>
             {priceLabel ? <span className={styles.price}>{priceLabel}</span> : null}
           </div>

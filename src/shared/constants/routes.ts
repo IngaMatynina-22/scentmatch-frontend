@@ -8,6 +8,7 @@ export const ROUTES = {
   match: '/match',
   matchText: '/match/text',
   matchGift: '/match/gift',
+  matchGiftResults: '/match/gift/results',
   recommendations: '/recommendations',
   analytics: '/analytics',
   favorites: '/favorites',

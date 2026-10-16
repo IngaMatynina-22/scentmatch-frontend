@@ -3,6 +3,7 @@ import styles from './PerfumeDetailsView.module.css'
 
 type PerfumeDetailsViewProps = {
   perfume: Perfume
+  onReviewsClick?: () => void
 }
 
 function formatPrice(price: number | null): string | null {
@@ -30,7 +31,10 @@ const CHARACTERISTIC_LABELS: Array<{
   { key: 'oriental', label: 'Орієнтал' },
 ]
 
-export function PerfumeDetailsView({ perfume }: PerfumeDetailsViewProps) {
+export function PerfumeDetailsView({
+  perfume,
+  onReviewsClick,
+}: PerfumeDetailsViewProps) {
   const priceLabel = formatPrice(perfume.price)
   const notesByType = perfume.notes.reduce<Record<string, string[]>>((acc, note) => {
     const key = note.noteType || 'Other'
@@ -56,10 +60,28 @@ export function PerfumeDetailsView({ perfume }: PerfumeDetailsViewProps) {
         <p className={styles.title}>{perfume.name}</p>
 
         <div className={styles.stats}>
-          <span className={styles.rating}>
-            ★ {perfume.rating.toFixed(1)}
-            <span className={styles.reviews}>({perfume.reviewsCount} відгуків)</span>
-          </span>
+          {perfume.reviewsCount > 0 && onReviewsClick ? (
+            <button
+              type="button"
+              className={styles.ratingButton}
+              onClick={onReviewsClick}
+              aria-label={`Перейти до відгуків · рейтинг ${perfume.rating.toFixed(1)}, ${perfume.reviewsCount} відгуків`}
+            >
+              ★ {perfume.rating.toFixed(1)}
+              <span className={styles.reviews}>
+                ({perfume.reviewsCount} відгуків)
+              </span>
+            </button>
+          ) : perfume.reviewsCount > 0 ? (
+            <span className={styles.rating}>
+              ★ {perfume.rating.toFixed(1)}
+              <span className={styles.reviews}>
+                ({perfume.reviewsCount} відгуків)
+              </span>
+            </span>
+          ) : (
+            <span className={styles.reviews}>Немає відгуків</span>
+          )}
           {priceLabel ? <span className={styles.price}>{priceLabel}</span> : null}
         </div>
 

@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/features/auth'
 import { ROUTES } from '@/shared/constants/routes'
@@ -22,6 +23,15 @@ const adminLinks = [
 export function AdminNav() {
   const { logout } = useAuth()
   const navigate = useNavigate()
+  const navRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    const nav = navRef.current
+    if (!nav) return
+    // #region agent log
+    fetch('http://127.0.0.1:7646/ingest/a93378d8-d876-4c8d-aacd-a4cfef8f0ff5',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'66d254'},body:JSON.stringify({sessionId:'66d254',runId:'pre-fix',hypothesisId:'F',location:'AdminNav.tsx:overflow',message:'AdminNav overflow metrics',data:{scrollWidth:nav.scrollWidth,clientWidth:nav.clientWidth,overflows:nav.scrollWidth>nav.clientWidth,innerWidth:window.innerWidth,path:window.location.pathname},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
+  }, [])
 
   async function handleLogout() {
     await logout()
@@ -29,7 +39,7 @@ export function AdminNav() {
   }
 
   return (
-    <nav className={styles.nav} aria-label="Адмін навігація">
+    <nav ref={navRef} className={styles.nav} aria-label="Адмін навігація">
       <ul className={styles.list}>
         <li>
           <NavLink

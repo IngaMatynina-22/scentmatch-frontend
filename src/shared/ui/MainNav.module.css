@@ -1,15 +1,36 @@
 .root {
   min-width: 0;
+  flex: 1 1 auto;
+  max-width: 100%;
+}
+
+.desktopRow {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  max-width: 100%;
 }
 
 .list,
-.drawerList {
+.drawerList,
+.pinned {
   display: flex;
   align-items: center;
   gap: var(--space-2);
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.list {
+  width: max-content;
+}
+
+.pinned {
+  flex: 0 0 auto;
+  padding-left: var(--space-1);
+  border-left: 1px solid var(--color-border);
 }
 
 .link {
@@ -55,6 +76,34 @@
 
 .desktop {
   display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-accent) 65%, transparent)
+    color-mix(in srgb, var(--color-text) 8%, transparent);
+  padding-bottom: 0.15rem;
+}
+
+.desktop::-webkit-scrollbar {
+  height: 0.35rem;
+}
+
+.desktop::-webkit-scrollbar-track {
+  background: color-mix(in srgb, var(--color-text) 6%, transparent);
+  border-radius: var(--radius-pill);
+}
+
+.desktop::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-accent) 70%, var(--color-surface));
+  border-radius: var(--radius-pill);
+}
+
+.desktop::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
 }
 
 .mobile {
@@ -88,8 +137,14 @@
   width: 100%;
 }
 
+@media (min-width: 901px) {
+  .desktopRow {
+    display: flex;
+  }
+}
+
 @media (max-width: 900px) {
-  .desktop {
+  .desktopRow {
     display: none;
   }
 

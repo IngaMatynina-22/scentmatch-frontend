@@ -205,7 +205,18 @@ export function PerfumeDetailsPage() {
         ) : null}
       </div>
 
-      <PerfumeDetailsView perfume={perfume} />
+      <PerfumeDetailsView
+        perfume={perfume}
+        onReviewsClick={() => {
+          const prefersReducedMotion = window.matchMedia(
+            '(prefers-reduced-motion: reduce)',
+          ).matches
+          document.getElementById('perfume-reviews')?.scrollIntoView({
+            behavior: prefersReducedMotion ? 'auto' : 'smooth',
+            block: 'start',
+          })
+        }}
+      />
 
       <SimilarPerfumesPanel perfumeId={perfume.id} />
 
